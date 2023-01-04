@@ -1,43 +1,8 @@
 import torch 
-# from PIL import Image
+import Data_set
 from torch import nn, save, load
 from torch.optim import Adam
-from torch.utils.data import DataLoader
-from torchvision import datasets
-from torchvision.transforms import ToTensor
 import os
-
-
-
-    # Get data 
-    video = cv2.VideoCapture("attack_highdef_client001_session01_highdef_photo_adverse.mov")
-
-    net = Net()
-
-    # Initialize a list to store the frames
-    frames = []
-
-    # Loop over the frames in the video
-    for i in range(100):
-        # Read the next frame
-        success, frame = video.read()
-        if not success:
-            break
-        
-        # Preprocess the frame
-        # frame = cv2.resize(frame, (224, 224))  # Resize the frame
-        frame = frame.transpose((2, 0, 1))  # Transpose the frame to match the input dimensions of the network
-        frame = torch.from_numpy(frame).float()  # Convert the frame to a tensor
-        frame = frame.unsqueeze(0)  # Add a batch dimension to the frame
-        print(frame.shape)
-        # Add the frame to the list of frames
-        frames.append(frame)([1, 3, 240, 320])
-
-    # Concatenate the frames into a single tensor
-    frames = torch.cat(frames, dim=0)
-
-    print(frames.shape) #([100, 3, 240, 320])
-    #1,28,28 - classes 0-9
 
 
 
@@ -66,7 +31,26 @@ class PAD(nn.Module):
 
     def forward(self, x): 
         return self.model(x)
+    
+    
 
+data=[]
+labels=[]
+
+real_path = r"D:\db\training_tesnsors\real_tensors"
+
+# Get a list of all the files in the folder
+file_list = os.listdir(folder_path)
+print(file_list)
+for vid in file_list:
+
+
+  
+
+dataset = Data_set(data, labels)
+
+# Create a data loader to iterate over the dataset
+dataloader = data.DataLoader(dataset, batch_size=200, shuffle=True)
 # Instance of the neural network, loss, optimizer 
 clf = PAD().to('cpu')
 opt = Adam(clf.parameters(), lr=1e-3)
